@@ -1,9 +1,25 @@
+const mongoose = require('mongoose')
 // Load environment variables from .env file
 require('dotenv').config();
 
+
 // Import required modules
 const express = require('express'); // Web framework for Node.js
-const mongoose = require('./configs/mongoose'); // MongoDB config file is called to initiate DB connection
+// const mongoose = require('./configs/mongoose');
+// MongoDB config file is called to initiate DB connection
+
+
+const MONGOOSE_URI=process.env.MONGOOSE_URI
+
+mongoose.connect(MONGOOSE_URI,{ useNewUrlParser: true, useUnifiedTopology: true })
+
+const db=mongoose.connection
+
+db.on('error',console.error.bind(console,'error connecting to db'))
+
+db.once('open',()=>{
+    console.log('Successfully connected to db');
+})
 
 // Create an instance of the Express application
 const app = express();
